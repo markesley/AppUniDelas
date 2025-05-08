@@ -1,0 +1,181 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id             String   @id @default(uuid()) @db.Uuid
+  nome           String
+  username       String   @unique
+  email          String   @unique
+  senha          String
+  telefone       String?
+  fotoPerfil     String?
+  dataCadastro   DateTime @default(now())
+  ultimoAcesso   DateTime?
+  universidade   Universidade? @relation(fields: [universidadeId], references: [id])
+  universidadeId String? @db.Uuid // <-- Corrigido para @db.Uuid
+
+  expoPushToken  String?
+
+  posts          Post[]
+  comentarios    Comentario[]
+  alertas        AlertaEmergencia[]
+  contatos       ContatoConfianca[]
+  participacoes  ParticipacaoGrupo[]
+  acessos        AcessoRecurso[]
+  curtidas       Curtida[]
+
+  redeApoioEnviadas  RedeApoioRequest[] @relation("Solicitante")
+  redeApoioRecebidas RedeApoioRequest[] @relation("Solicitado")
+}
+
+model Universidade {
+  id                 String  @id @default(uuid()) @db.Uuid
+  nome               String
+  cidade             String
+  estado             String
+  endereco           String
+  contatoSeguranca   String?
+  contatoOuvidoria   String?
+  
+  usuarias           Usuario[]
+  gruposApoio        GrupoApoio[]
+}
+
+
+enum Visibilidade {
+  PUBLICO
+  ANONIMO
+}
+
+enum Status {
+  ATIVO
+  REMOVIDO
+}
+
+model Post {
+  id             String      @id @default(uuid()) @db.Uuid
+  usuario        Usuario     @relation(fields: [usuarioId], references: [id])
+  usuarioId      String      @db.Uuid
+  conteudo       String
+  dataPublicacao DateTime    @default(now())
+  visibilidade   Visibilidade
+  status         Status
+
+  comentarios    Comentario[]
+  curtidas       Curtida[]
+}
+
+
+
+model Comentario {
+  id             String       @id @default(uuid()) @db.Uuid
+  post           Post         @relation(fields: [postId], references: [id])
+  postId         String       @db.Uuid
+  usuario        Usuario      @relation(fields: [usuarioId], references: [id])
+  usuarioId      String       @db.Uuid
+  conteudo       String
+  dataComentario DateTime     @default(now())
+  visibilidade   Visibilidade
+  status         Status
+}
+
+model GrupoApoio {
+  id                  String  @id @default(uuid()) @db.Uuid
+  nome                String
+  descricao           String
+  local               String?
+  horario            String?
+  diaSemana           String?
+  universidade        Universidade @relation(fields: [universidadeId], references: [id])
+  universidadeId      String @db.Uuid // <-- Corrigido para @db.Uuid
+  imagem             String?
+  contatoResponsavel String?
+
+  participantes       ParticipacaoGrupo[]
+}
+
+model ParticipacaoGrupo {
+  usuario      Usuario   @relation(fields: [usuarioId], references: [id])
+  usuarioId    String @db.Uuid // <-- Corrigido para @db.Uuid
+  grupo        GrupoApoio @relation(fields: [grupoId], references: [id])
+  grupoId      String @db.Uuid // <-- Corrigido para @db.Uuid
+  dataEntrada  DateTime @default(now())
+
+  @@id([usuarioId, grupoId]) // Chave primária composta
+}
+
+model Recurso {
+  id          String  @id @default(uuid()) @db.Uuid
+  titulo      String
+  descricao   String
+  tipo        String // legal, psicológico, segurança, etc.
+  linkExterno String?
+
+  acessos     AcessoRecurso[]
+}
+
+model AcessoRecurso {
+  usuario     Usuario @relation(fields: [usuarioId], references: [id])
+  usuarioId   String @db.Uuid // <-- Corrigido para @db.Uuid
+  recurso     Recurso @relation(fields: [recursoId], references: [id])
+  recursoId   String @db.Uuid // <-- Corrigido para @db.Uuid
+  dataAcesso  DateTime @default(now())
+
+  @@id([usuarioId, recursoId])
+}
+
+model ContatoEmergencia {
+  id        String  @id @default(uuid()) @db.Uuid
+  nome      String
+  numero    String
+  descricao String?
+  tipo      String // polícia, campus, saúde, etc.
+  icone     String?
+  cor       String?
+}
+
+
+model AlertaEmergencia {
+  id        String   @id @default(uuid()) @db.Uuid
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId String   @db.Uuid
+  dataHora  DateTime @default(now())
+  latitude  Float?
+  longitude Float?
+}
+
+model ContatoConfianca {
+  id       String  @id @default(uuid()) @db.Uuid
+  usuario  Usuario @relation(fields: [usuarioId], references: [id])
+  usuarioId String @db.Uuid // <-- Corrigido para @db.Uuid
+  nome     String
+  telefone String
+  email    String?
+  relacao  String
+}
+
+model Curtida {
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+  usuarioId String @db.Uuid // <-- Corrigido para @db.Uuid
+  post      Post    @relation(fields: [postId], references: [id])
+  postId    String @db.Uuid // <-- Corrigido para @db.Uuid
+  dataCurtida DateTime @default(now())
+
+  @@id([usuarioId, postId])
+}
+
+model RedeApoioRequest {
+  id             String   @id @default(uuid()) @db.Uuid
+  solicitante    Usuario  @relation("Solicitante", fields: [solicitanteId], references: [id])
+  solicitanteId  String   @db.Uuid
+  solicitado     Usuario  @relation("Solicitado", fields: [solicitadoId], references: [id])
+  solicitadoId   String   @db.Uuid
+  status         String   @default("PENDENTE") // valores: PENDENTE, ACEITA, REJEITADA
+  dataSolicitacao DateTime @default(now())
+}
