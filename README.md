@@ -10,7 +10,6 @@ Aplicativo (React Native + Node.js) para prevenção e resposta a casos de viol
   <img src="https://github.com/user-attachments/assets/ff926ab1-f74c-4623-8cde-586da4c46662" width="300" />
   <img src="https://github.com/user-attachments/assets/42aa4041-68ab-44fc-9975-e8af3e4abcf6" width="300" />
 </p>
-
 <p align="center">
   <img src="https://github.com/user-attachments/assets/80dfa2fd-ecac-4062-9a88-ce81d992f9dd" width="300" />
   <img src="https://github.com/user-attachments/assets/6d184274-df15-4f44-9ea4-734373d17ff3" width="300" />
