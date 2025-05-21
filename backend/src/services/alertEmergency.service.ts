@@ -66,6 +66,7 @@ export class AlertaEmergenciaService {
       dataHora: a.dataHora,
       latitude: a.latitude!,
       longitude: a.longitude!,
+      whatsappLinks: [],
     }))
   }
 }
