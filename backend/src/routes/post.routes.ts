@@ -62,4 +62,22 @@ export async function postRoutes(fastify: FastifyInstance) {
       })
     }
   )
+
+  // DELETE /posts/:id
+  fastify.delete<{ Params: { id: string } }>(
+    '/:id',
+    { preHandler: [authMiddleware] },
+    async (req, reply) => {
+      try {
+        const user = req.user as { id: string };
+        await postService.deletePost(req.params.id, user.id);
+        return reply.code(204).send();
+      } catch (err: any) {
+        console.error('Erro ao deletar post:', err);
+        return reply
+          .code(err.message.includes('não encontrado') ? 404 : 403)
+          .send({ error: err.message });
+      }
+    }
+  );
 }

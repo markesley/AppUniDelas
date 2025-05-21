@@ -20,4 +20,11 @@ export class PostService {
     return this.postRepository.getPostById(id);
   }
 
+  async deletePost(id: string, usuarioId: string): Promise<void> {
+    const deleted = await this.postRepository.delete(id, usuarioId);
+    if (!deleted) {
+      throw new Error('Post não encontrado ou você não tem permissão');
+    }
+  }
+
 }

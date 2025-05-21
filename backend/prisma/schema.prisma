@@ -67,15 +67,15 @@ model Post {
   visibilidade   Visibilidade
   status         Status
 
-  comentarios    Comentario[]
-  curtidas       Curtida[]
+  comentarios    Comentario[]   
+  curtidas       Curtida[]     
 }
 
 
 
 model Comentario {
   id             String       @id @default(uuid()) @db.Uuid
-  post           Post         @relation(fields: [postId], references: [id])
+  post           Post         @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId         String       @db.Uuid
   usuario        Usuario      @relation(fields: [usuarioId], references: [id])
   usuarioId      String       @db.Uuid
@@ -163,7 +163,7 @@ model ContatoConfianca {
 model Curtida {
   usuario   Usuario @relation(fields: [usuarioId], references: [id])
   usuarioId String @db.Uuid // <-- Corrigido para @db.Uuid
-  post      Post    @relation(fields: [postId], references: [id])
+  post      Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    String @db.Uuid // <-- Corrigido para @db.Uuid
   dataCurtida DateTime @default(now())
 

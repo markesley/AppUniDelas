@@ -66,6 +66,15 @@ export class PostRepository {
       comentariosCount: post._count.comentarios,
     }));
   }
+
+  /** Remove o post e, via ON DELETE CASCADE, também seus comentários */
+  async delete(id: string, usuarioId: string): Promise<boolean> {
+    // deleteMany retorna o número de registros deletados
+    const result = await prisma.post.deleteMany({
+      where: { id, usuarioId },
+    });
+    return result.count > 0; // true se deletou
+  }
   
 }
   

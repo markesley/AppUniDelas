@@ -10,11 +10,13 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native'
-import { MessageCircle, Heart } from 'lucide-react-native'
+import { MessageCircle, Heart, Trash2 } from 'lucide-react-native'
 import { useRouter } from 'expo-router'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { API_BASE_URL } from '../config/config'
+import { getUserData } from '../../utils/storage';
+
 
 interface Post {
   id: string
@@ -27,15 +29,26 @@ interface Post {
   comentariosCount: number
 }
 
+
+
 export default function FeedScreen() {
   const [posts, setPosts] = useState<Post[]>([])
   const [newPost, setNewPost] = useState('')
   const [loading, setLoading] = useState(false)
+  const [userId, setUserId] = useState<string | null>(null)
   const router = useRouter()
 
+  // useEffect(() => {
+  //   fetchPosts()
+  // }, [])
+
   useEffect(() => {
-    fetchPosts()
-  }, [])
+    (async () => {
+      const u = await getUserData();
+      setUserId(u?.id ?? null);
+      fetchPosts();
+    })();
+  }, []);
 
   const fetchPosts = async () => {
     setLoading(true)
@@ -85,6 +98,25 @@ export default function FeedScreen() {
       Alert.alert('Erro', err.message)
     }
   }
+
+  const handleDelete = async (postId: string) => {
+  try {
+    const res = await fetch(`${API_BASE_URL}/posts/${postId}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+    if (res.status === 204) {
+      fetchPosts();
+      Alert.alert('Sucesso', 'Post excluído.');
+    } else {
+      const err = await res.json();
+      throw new Error(err.error || 'Não foi possível excluir');
+    }
+  } catch (err: any) {
+    console.error(err);
+    Alert.alert('Erro', err.message);
+  }
+};
 
   if (loading)
     return (
@@ -146,6 +178,28 @@ export default function FeedScreen() {
               <MessageCircle size={20} color="#8B4F9F" />
               <Text style={styles.actionText}>{post.comentariosCount}</Text>
             </TouchableOpacity>
+
+            {post.usuarioId === userId && (
+              <TouchableOpacity
+                style={styles.actionButton}
+                onPress={() =>
+                  Alert.alert(
+                    'Confirmação',
+                    'Deseja mesmo excluir este post e todos os comentários?',
+                    [
+                      { text: 'Cancelar', style: 'cancel' },
+                      {
+                        text: 'Excluir',
+                        style: 'destructive',
+                        onPress: () => handleDelete(post.id),
+                      },
+                    ]
+                  )
+                }
+              >
+                <Trash2 size={20} color="#E33" />
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       ))}

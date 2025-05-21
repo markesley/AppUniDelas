@@ -109,10 +109,12 @@ app.register(alertaEmergenciaRoutes, { prefix: '/alertas-emergencia' });
 app.register(userSearchRoutes, { prefix: '/usuarios' });
 app.register(redeApoioRoutes, { prefix: '/rede-apoio' });
 
-app.listen({ port: 3100, host: '0.0.0.0' })
-  .then(() => console.log('Server listening on port 3100'))
+const port = Number(process.env.PORT) || 3100;
+
+app.listen({ port, host: '0.0.0.0' })
+  .then(() => console.log(`🚀 Server running on port ${port}`))
   .catch(err => {
-    console.error('Erro ao subir servidor:', err);
+    console.error('❌ Erro ao subir servidor:', err);
     process.exit(1);
   });
 

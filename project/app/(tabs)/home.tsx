@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  Linking,
 } from 'react-native'
 import { Bell, AlertTriangle, HeartHandshake, Calendar } from 'lucide-react-native'
 import { useRouter } from 'expo-router'
@@ -41,6 +42,16 @@ export default function HomeScreen() {
     } catch {
       Alert.alert('Erro', 'Não foi possível deslogar')
     }
+  }
+
+  const openLink = (url: string) => {
+    Linking.canOpenURL(url).then(supported => {
+      if (supported) {
+        Linking.openURL(url)
+      } else {
+        Alert.alert('Erro', 'Não foi possível abrir o link')
+      }
+    })
   }
 
   return (
@@ -106,6 +117,53 @@ export default function HomeScreen() {
         <View style={styles.helpCard}>
           <Text style={styles.helpNumber}>190</Text>
           <Text style={styles.helpText}>Polícia Militar</Text>
+        </View>
+      </View>
+
+      {/* INFORMATIVOS PIAUÍ */}
+      <View style={styles.infoSection}>
+        <Text style={styles.sectionTitle}>Informativos - Piauí</Text>
+        <View style={styles.helpCard}>
+          <Text style={styles.helpText} onPress={() => openLink('tel:180')}>
+            📞 Ligue 180 (Central de Atendimento à Mulher)
+          </Text>
+        </View>
+        <View style={styles.helpCard}>
+          <Text style={styles.helpText} onPress={() => openLink('tel:08000001673')}>
+            📞 Ei, Mermã! Não Se Cale! (0800 000 1673)
+          </Text>
+        </View>
+        <View style={styles.helpCard}>
+          <Text
+            style={styles.helpText}
+            onPress={() => openLink('https://delegaciavirtual.sinesp.gov.br')}
+          >
+            🌐 Delegacia Virtual
+          </Text>
+        </View>
+        <View style={styles.helpCard}>
+          <Text
+            style={styles.helpText}
+            onPress={() => openLink('https://www.gov.br/mdh/pt-br/acoes-e-programas/casa-da-mulher-brasileira')}
+          >
+            🏛️ Casa da Mulher Brasileira - Teresina
+          </Text>
+        </View>
+        <View style={styles.helpCard}>
+          <Text
+            style={styles.helpText}
+            onPress={() => openLink('http://www.mp.pi.gov.br/ins/')}
+          >
+            🏛️ NUPEVID - Ministério Público do Piauí
+          </Text>
+        </View>
+        <View style={styles.helpCard}>
+          <Text
+            style={styles.helpText}
+            onPress={() => openLink('https://defensoria.pi.gov.br')}
+          >
+            🏛️ Defensoria Pública – Núcleo de Defesa da Mulher
+          </Text>
         </View>
       </View>
     </ScrollView>

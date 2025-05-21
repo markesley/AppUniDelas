@@ -13,7 +13,7 @@ export default function InfoScreen() {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Tipos de Violência</Text>
-        
+
         <View style={styles.infoCard}>
           <Text style={styles.infoTitle}>Violência Física</Text>
           <Text style={styles.infoDescription}>
@@ -24,60 +24,75 @@ export default function InfoScreen() {
         <View style={styles.infoCard}>
           <Text style={styles.infoTitle}>Violência Psicológica</Text>
           <Text style={styles.infoDescription}>
-            Condutas que causem dano emocional, diminuição da autoestima, prejudiquem
-            o desenvolvimento ou visem controlar ações e decisões.
+            Ações que causem dano emocional, controle da vida, ameaças, humilhação, chantagem, manipulação ou isolamento.
+          </Text>
+        </View>
+
+        <View style={styles.infoCard}>
+          <Text style={styles.infoTitle}>Violência Sexual</Text>
+          <Text style={styles.infoDescription}>
+            Qualquer conduta que force a mulher a presenciar, manter ou participar de relação sexual não desejada.
+          </Text>
+        </View>
+
+        <View style={styles.infoCard}>
+          <Text style={styles.infoTitle}>Violência Patrimonial</Text>
+          <Text style={styles.infoDescription}>
+            Controle ou destruição de objetos, documentos, bens, valores ou recursos econômicos da mulher.
+          </Text>
+        </View>
+
+        <View style={styles.infoCard}>
+          <Text style={styles.infoTitle}>Violência Moral</Text>
+          <Text style={styles.infoDescription}>
+            Calúnia, difamação ou injúria que atentem contra a dignidade ou reputação da mulher.
           </Text>
         </View>
 
         <View style={styles.infoCard}>
           <Text style={styles.infoTitle}>Assédio</Text>
           <Text style={styles.infoDescription}>
-            Condutas indesejadas que tenham por objetivo ou efeito intimidar
-            ou humilhar uma pessoa.
+            Condutas indesejadas com intuito de intimidar, constranger ou humilhar a vítima, especialmente no trabalho ou em espaços públicos.
           </Text>
         </View>
       </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Como Denunciar</Text>
-        
-        <TouchableOpacity style={styles.linkCard}>
-          <View style={styles.linkContent}>
-            <Text style={styles.linkTitle}>Delegacia da Mulher</Text>
-            <Text style={styles.linkDescription}>
-              Encontre a delegacia mais próxima
-            </Text>
-          </View>
-          <ExternalLink size={24} color="#8B4F9F" />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.linkCard}>
-          <View style={styles.linkContent}>
-            <Text style={styles.linkTitle}>Denúncia Online</Text>
-            <Text style={styles.linkDescription}>
-              Faça sua denúncia pela internet
-            </Text>
-          </View>
-          <ExternalLink size={24} color="#8B4F9F" />
-        </TouchableOpacity>
-      </View>
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Legislação</Text>
-        
+
         <View style={styles.infoCard}>
           <Text style={styles.infoTitle}>Lei Maria da Penha</Text>
           <Text style={styles.infoDescription}>
-            Lei 11.340/2006 - Cria mecanismos para coibir a violência doméstica
-            e familiar contra a mulher.
+            Lei 11.340/2006 - Cria mecanismos para coibir a violência doméstica e familiar contra a mulher.
           </Text>
         </View>
 
         <View style={styles.infoCard}>
           <Text style={styles.infoTitle}>Lei do Minuto Seguinte</Text>
           <Text style={styles.infoDescription}>
-            Lei 12.845/2013 - Dispõe sobre o atendimento obrigatório e integral
-            às pessoas em situação de violência sexual.
+            Lei 12.845/2013 - Garante atendimento imediato e humanizado a vítimas de violência sexual no SUS.
+          </Text>
+        </View>
+
+        <View style={styles.infoCard}>
+          <Text style={styles.infoTitle}>Lei do Feminicídio</Text>
+          <Text style={styles.infoDescription}>
+            Lei 13.104/2015 - Tipifica o feminicídio como circunstância qualificadora do homicídio, com penas mais severas.
+          </Text>
+        </View>
+
+        <View style={styles.infoCard}>
+          <Text style={styles.infoTitle}>Lei Carolina Dieckmann</Text>
+          <Text style={styles.infoDescription}>
+            Lei 12.737/2012 - Criminaliza a invasão de dispositivos eletrônicos e divulgação de conteúdos íntimos sem consentimento.
+          </Text>
+        </View>
+
+        <View style={styles.infoCard}>
+          <Text style={styles.infoTitle}>Lei da Importunação Sexual</Text>
+          <Text style={styles.infoDescription}>
+            Lei 13.718/2018 - Criminaliza atos libidinosos sem consentimento em locais públicos ou privados.
           </Text>
         </View>
       </View>
